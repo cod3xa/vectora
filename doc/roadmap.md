@@ -53,14 +53,16 @@ Status: **complete** (see `doc/laravel.md`).
 
 ## Phase 3 — Embeddings
 
+Status: **complete** (see `doc/embeddings.md`).
+
 | Module     | Sub-module / Task              | Status  |
 | ---------- | ------------------------------ | ------- |
-| Embeddings | `EmbeddingDriver` interface    | 🔴 Pending |
-| Embeddings | OpenAI driver                  | 🔴 Pending |
-| Embeddings | Stub / array driver (testing)  | 🔴 Pending |
-| Embeddings | Custom driver docs             | 🔴 Pending |
-| Embeddings | Batch embedding support        | 🔴 Pending |
-| Embeddings | Embedding caching (hash dedup) | 🔴 Pending |
+| Embeddings | `EmbeddingDriver` interface    | 🟢 Done |
+| Embeddings | OpenAI driver                  | 🟢 Done |
+| Embeddings | Stub / array driver (testing)  | 🟢 Done |
+| Embeddings | Custom driver docs             | 🟢 Done |
+| Embeddings | Batch embedding support        | 🟢 Done |
+| Embeddings | Embedding caching (hash dedup) | 🟢 Done |
 
 ---
 

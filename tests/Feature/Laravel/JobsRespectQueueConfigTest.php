@@ -26,4 +26,20 @@ final class JobsRespectQueueConfigTest extends PineconeFeatureTestCase
         $this->assertSame('redis', $job->connection);
         $this->assertSame('vectors', $job->queue);
     }
+
+    public function test_omitted_queue_name_leaves_job_queue_null_for_connection_default(): void
+    {
+        $this->mergePineconeConfig([
+            'api_key' => 'k',
+            'indexes' => ['default' => ['host' => 'https://x', 'namespace' => '']],
+            'queue' => [
+                'connection' => 'redis',
+                'queue' => null,
+            ],
+        ], $this->app);
+
+        $job = new UpsertVectorsJob([['id' => 'a', 'values' => [0.1]]]);
+        $this->assertSame('redis', $job->connection);
+        $this->assertNull($job->queue);
+    }
 }

@@ -74,10 +74,14 @@ return [
     |--------------------------------------------------------------------------
     | Queue defaults for vector jobs
     |--------------------------------------------------------------------------
+    |
+    | Omit PINECONE_QUEUE (or leave null) so jobs use the selected connection’s
+    | default queue name instead of forcing Laravel’s global "default" queue.
+    |
     */
     'queue' => [
         'connection' => env('PINECONE_QUEUE_CONNECTION'),
-        'queue' => env('PINECONE_QUEUE', 'default'),
+        'queue' => env('PINECONE_QUEUE'),
     ],
 
     /*

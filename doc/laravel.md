@@ -18,6 +18,10 @@ Legacy single-host apps can keep using top-level `host` / `namespace`; they are 
 
 Each index’s `namespace` value is passed into `PineconeVectorStore` as the **default namespace** for **upsert / query / delete**: when the request or job passes `namespace: null`, that default is used. Pass an **empty string** `''` to target Pinecone’s default namespace (no `namespace` in the API payload) instead of the connection default. **`describeIndexStats` and `pinecone:sync` do not apply this default** (avoid metadata-style `filter` and serverless limitations); pass a namespace argument only when you intentionally want a filtered stats call.
 
+## Queue
+
+Set `PINECONE_QUEUE_CONNECTION` to route jobs to a given connection. Leave **`PINECONE_QUEUE` unset** so jobs use that connection’s **default queue name** (instead of always pushing to Laravel’s global `default` queue).
+
 ## HTTP client
 
 The Laravel integration uses **Guzzle** as the PSR-18 client (`guzzlehttp/guzzle` is a **runtime** `require` so production `composer install --no-dev` works).

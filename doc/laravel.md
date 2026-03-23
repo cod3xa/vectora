@@ -16,6 +16,12 @@ php artisan vendor:publish --tag=pinecone-config
 
 Legacy single-host apps can keep using top-level `host` / `namespace`; they are mapped to the `default` index when `indexes` is empty.
 
+Each index’s `namespace` value is passed into `PineconeVectorStore` as the **default namespace**: `Pinecone::connection()`, the `VectorStoreContract` binding, jobs, and `pinecone:sync` then target that namespace whenever the request or job does not set an explicit one (explicit values always win).
+
+## HTTP client
+
+The Laravel integration uses **Guzzle** as the PSR-18 client (`guzzlehttp/guzzle` is a **runtime** `require` so production `composer install --no-dev` works).
+
 ## Facade & container
 
 - `Pinecone::connection(?string $index)` → `VectorStoreContract`

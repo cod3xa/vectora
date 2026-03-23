@@ -137,7 +137,10 @@ final class PineconeClientFactory
             throw new \InvalidArgumentException(sprintf('Pinecone host is not configured for index [%s].', $index ?? (string) ($c['default'] ?? 'default')));
         }
 
-        return new PineconeVectorStore($this->transport(), $conn['host']);
+        $ns = $conn['namespace'] ?? '';
+        $defaultNamespace = is_string($ns) && $ns !== '' ? $ns : null;
+
+        return new PineconeVectorStore($this->transport(), $conn['host'], $defaultNamespace);
     }
 
     public function indexAdmin(): IndexAdminContract

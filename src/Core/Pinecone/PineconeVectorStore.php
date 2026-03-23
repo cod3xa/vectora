@@ -21,15 +21,22 @@ final class PineconeVectorStore implements VectorStoreContract
 {
     private readonly string $dataBaseUrl;
 
+    private readonly ?string $defaultNamespace;
+
     public function __construct(
         private readonly PineconeHttpTransport $transport,
         string $indexHost,
+        ?string $defaultNamespace = null,
     ) {
         $this->dataBaseUrl = PineconeHttpTransport::normalizeBaseUrl($indexHost);
+        $this->defaultNamespace = $defaultNamespace !== null && $defaultNamespace !== ''
+            ? $defaultNamespace
+            : null;
     }
 
     public function upsert(UpsertVectorsRequest $request): UpsertResult
     {
+        $request = $this->withDefaultNamespaceForUpsert($request);
         $response = $this->transport->postJson(
             $this->dataBaseUrl,
             '/vectors/upsert',
@@ -45,6 +52,7 @@ final class PineconeVectorStore implements VectorStoreContract
 
     public function query(QueryVectorsRequest $request): QueryVectorsResult
     {
+        $request = $this->withDefaultNamespaceForQuery($request);
         $response = $this->transport->postJson(
             $this->dataBaseUrl,
             '/query',
@@ -56,6 +64,7 @@ final class PineconeVectorStore implements VectorStoreContract
 
     public function delete(DeleteVectorsRequest $request): void
     {
+        $request = $this->withDefaultNamespaceForDelete($request);
         $this->transport->postJson(
             $this->dataBaseUrl,
             '/vectors/delete',
@@ -65,6 +74,7 @@ final class PineconeVectorStore implements VectorStoreContract
 
     public function describeIndexStats(?string $namespace = null): DescribeIndexStatsResult
     {
+        $namespace = $this->effectiveNamespace($namespace);
         $body = [];
         if ($namespace !== null && $namespace !== '') {
             $body['filter'] = ['namespace' => $namespace];
@@ -118,5 +128,60 @@ final class PineconeVectorStore implements VectorStoreContract
         }
 
         return new DescribeIndexStatsResult($dim, $total, $namespaces, $metric);
+    }
+
+    private function effectiveNamespace(?string $explicit): ?string
+    {
+        if ($explicit !== null && $explicit !== '') {
+            return $explicit;
+        }
+        if ($this->defaultNamespace !== null) {
+            return $this->defaultNamespace;
+        }
+
+        return null;
+    }
+
+    private function withDefaultNamespaceForUpsert(UpsertVectorsRequest $request): UpsertVectorsRequest
+    {
+        $ns = $this->effectiveNamespace($request->namespace);
+        if ($ns === $request->namespace) {
+            return $request;
+        }
+
+        return new UpsertVectorsRequest($request->vectors, $ns);
+    }
+
+    private function withDefaultNamespaceForQuery(QueryVectorsRequest $request): QueryVectorsRequest
+    {
+        $ns = $this->effectiveNamespace($request->namespace);
+        if ($ns === $request->namespace) {
+            return $request;
+        }
+
+        return new QueryVectorsRequest(
+            $request->vector,
+            $request->topK,
+            $ns,
+            $request->filter,
+            $request->includeMetadata,
+            $request->includeValues,
+            $request->queryByVectorId,
+        );
+    }
+
+    private function withDefaultNamespaceForDelete(DeleteVectorsRequest $request): DeleteVectorsRequest
+    {
+        $ns = $this->effectiveNamespace($request->namespace);
+        if ($ns === $request->namespace) {
+            return $request;
+        }
+
+        return new DeleteVectorsRequest(
+            namespace: $ns,
+            ids: $request->ids,
+            filter: $request->filter,
+            deleteAll: $request->deleteAll,
+        );
     }
 }

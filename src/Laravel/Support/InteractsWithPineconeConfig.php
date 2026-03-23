@@ -35,6 +35,20 @@ trait InteractsWithPineconeConfig
             ];
         }
 
+        // Published configs without `indexes` still merge package `indexes.default` via mergeConfigFrom,
+        // leaving empty env-based hosts. Prefer legacy root `host` / `namespace` for the default index.
+        $defaultKey = (string) ($config['default'] ?? 'default');
+        $rootHost = (string) ($config['host'] ?? '');
+        $rootNamespace = (string) ($config['namespace'] ?? '');
+
+        if ($rootHost !== '' && isset($normalized[$defaultKey]) && $normalized[$defaultKey]['host'] === '') {
+            $normalized[$defaultKey]['host'] = $rootHost;
+        }
+
+        if (isset($normalized[$defaultKey]) && $normalized[$defaultKey]['namespace'] === '' && $rootNamespace !== '') {
+            $normalized[$defaultKey]['namespace'] = $rootNamespace;
+        }
+
         return $normalized;
     }
 

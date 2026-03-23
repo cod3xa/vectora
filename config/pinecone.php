@@ -38,7 +38,8 @@ return [
     | Named index connections (host + optional default namespace)
     |--------------------------------------------------------------------------
     |
-    | If empty, legacy `host` / `namespace` below are mapped to `default`.
+    | If empty, legacy `host` / `namespace` below are mapped to the connection
+    | named by `default` (PINECONE_INDEX), not always the string "default".
     |
     */
     'indexes' => [

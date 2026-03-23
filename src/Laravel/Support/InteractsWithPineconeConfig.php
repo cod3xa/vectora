@@ -16,8 +16,9 @@ trait InteractsWithPineconeConfig
         $indexes = $config['indexes'] ?? [];
 
         if ($indexes === [] && (($config['host'] ?? '') !== '' || ($config['namespace'] ?? '') !== '')) {
+            $legacyKey = (string) ($config['default'] ?? 'default');
             $indexes = [
-                'default' => [
+                $legacyKey => [
                     'host' => (string) ($config['host'] ?? ''),
                     'namespace' => (string) ($config['namespace'] ?? ''),
                 ],

@@ -60,4 +60,29 @@ final class InteractsWithPineconeConfigNormalizationTest extends TestCase
         $this->assertSame('https://published-only', $out['default']['host']);
         $this->assertSame('legacy-ns', $out['default']['namespace']);
     }
+
+    public function test_legacy_single_host_uses_configured_default_index_name(): void
+    {
+        $t = new class
+        {
+            use InteractsWithPineconeConfig;
+
+            /** @param  array<string, mixed>  $c */
+            public function r(array $c): array
+            {
+                return $this->resolveIndexes($c);
+            }
+        };
+
+        $out = $t->r([
+            'default' => 'primary',
+            'indexes' => [],
+            'host' => 'https://single.example',
+            'namespace' => 'app',
+        ]);
+
+        $this->assertArrayHasKey('primary', $out);
+        $this->assertSame('https://single.example', $out['primary']['host']);
+        $this->assertSame('app', $out['primary']['namespace']);
+    }
 }

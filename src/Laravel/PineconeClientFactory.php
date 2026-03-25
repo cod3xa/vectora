@@ -17,7 +17,7 @@ use Vectora\Pinecone\Core\Pinecone\PineconeIndexAdmin;
 use Vectora\Pinecone\Core\Pinecone\PineconeVectorStore;
 use Vectora\Pinecone\Laravel\Support\InteractsWithPineconeConfig;
 
-final class PineconeClientFactory
+class PineconeClientFactory
 {
     use InteractsWithPineconeConfig;
 

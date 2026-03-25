@@ -10,6 +10,7 @@ use Mockery;
 use Vectora\Pinecone\Contracts\IndexAdminContract;
 use Vectora\Pinecone\Laravel\PineconeClientFactory;
 use Vectora\Pinecone\Tests\Feature\Laravel\PineconeFeatureTestCase;
+use Vectora\Pinecone\Tests\Support\FixedVectorStorePineconeClientFactory;
 use Vectora\Pinecone\Tests\Support\RecordingVectorStore;
 
 abstract class EmbeddingsFeatureTestCase extends PineconeFeatureTestCase
@@ -44,10 +45,11 @@ abstract class EmbeddingsFeatureTestCase extends PineconeFeatureTestCase
         $this->embeddingsSchemaCreated = true;
 
         $this->recordingStore = new RecordingVectorStore;
-        $factory = Mockery::mock(PineconeClientFactory::class);
-        $factory->allows('vectorStore')->withAnyArgs()->andReturn($this->recordingStore);
-        $factory->allows('indexAdmin')->andReturn(Mockery::mock(IndexAdminContract::class));
-        $this->instance(PineconeClientFactory::class, $factory);
+        $this->instance(PineconeClientFactory::class, new FixedVectorStorePineconeClientFactory(
+            $this->app,
+            $this->recordingStore,
+            Mockery::mock(IndexAdminContract::class),
+        ));
     }
 
     protected function tearDown(): void

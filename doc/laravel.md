@@ -30,7 +30,10 @@ The Laravel integration uses **Guzzle** as the PSR-18 client (`guzzlehttp/guzzle
 
 - `Pinecone::connection(?string $index)` → `VectorStoreContract`
 - `Pinecone::admin()` → `IndexAdminContract`
-- Type-hint `VectorStoreContract` / `IndexAdminContract` / `PineconeClientFactory` in your own services.
+- `Pinecone::embeddings(?string $driver)` / `embed()` / `embedMany()` → `EmbeddingDriver` (Phase 3)
+- Type-hint `VectorStoreContract` / `IndexAdminContract` / `EmbeddingDriver` / `PineconeClientFactory` in your own services.
+
+See **[embeddings.md](./embeddings.md)** for drivers, OpenAI env vars, and optional result caching.
 
 ## Queue jobs
 

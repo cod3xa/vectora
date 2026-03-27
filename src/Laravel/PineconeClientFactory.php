@@ -221,7 +221,29 @@ class PineconeClientFactory
         $ns = $conn['namespace'] ?? '';
         $defaultNamespace = is_string($ns) && $ns !== '' ? $ns : null;
 
-        return new PineconeVectorStore($this->transport(), $conn['host'], $defaultNamespace);
+        $indexName = $index ?? (string) ($c['default'] ?? 'default');
+        $inner = new PineconeVectorStore($this->transport(), $conn['host'], $defaultNamespace);
+
+        $qc = $c['query_cache'] ?? [];
+        if (! is_array($qc) || ! (bool) ($qc['enabled'] ?? false)) {
+            return $inner;
+        }
+
+        $storeName = $qc['store'] ?? null;
+        $manager = $this->app->make('cache');
+        $cache = $storeName !== null && is_string($storeName) && $storeName !== ''
+            ? $manager->store($storeName)
+            : $manager->store();
+        if (! $cache instanceof CacheRepository) {
+            throw new \RuntimeException('Pinecone query_cache requires a Laravel cache repository.');
+        }
+
+        $prefix = (string) ($qc['prefix'] ?? 'vectora.pinecone.query');
+        $ttlRaw = $qc['ttl'] ?? null;
+        $ttlSeconds = $ttlRaw === null || $ttlRaw === '' ? null : (int) $ttlRaw;
+        $fingerprint = $indexName.'|'.$conn['host'].'|'.($conn['namespace'] ?? '');
+
+        return new CachingVectorStore($inner, $cache, $prefix, $ttlSeconds, $fingerprint);
     }
 
     public function indexAdmin(): IndexAdminContract

@@ -88,3 +88,4 @@ doc/
 | [laravel.md](./laravel.md) | Phase 2: service provider, jobs, commands |
 | [embeddings.md](./embeddings.md) | Phase 3: EmbeddingDriver, OpenAI, cache |
 | [eloquent.md](./eloquent.md) | Phase 4: HasEmbeddings, semantic search, batch |
+| [dx.md](./dx.md) | Phase 5: query cache, debug logging, config validation, error classification |

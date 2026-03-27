@@ -84,6 +84,8 @@ Status: **complete** (see `doc/eloquent.md`).
 
 ## Phase 5 — DX & Hardening
 
+Status: **complete** (see `doc/dx.md`).
+
 | Module | Sub-module / Task              | Status  |
 | ------ | ------------------------------ | ------- |
 | DX     | Query result caching           | 🔴 Pending |

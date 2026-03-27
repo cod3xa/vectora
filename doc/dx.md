@@ -16,3 +16,17 @@ Vector similarity queries can be expensive. When **`PINECONE_QUERY_CACHE=true`**
 | `PINECONE_QUERY_CACHE_TTL` | Seconds; omit or empty for **forever** (until manual flush) |
 
 Cache keys hash the normalized Pinecone query body plus an index fingerprint (logical index name, host, default namespace). After **upserts** or **deletes**, cached query rows may be stale until TTL expiry or **`php artisan cache:clear`**.
+
+---
+
+## Developer debug mode
+
+When **`PINECONE_DEBUG=true`**, the HTTP client logs **truncated** request and response bodies at **debug** level (`pinecone.debug.request` / `pinecone.debug.response`). Use alongside **`PINECONE_LOG_REQUESTS`** for URI/method/status line logging.
+
+| Env | Purpose |
+|-----|---------|
+| `PINECONE_DEBUG` | Enable body previews |
+| `PINECONE_DEBUG_CHANNEL` | Optional log channel |
+| `PINECONE_DEBUG_BODY_MAX` | Max characters per preview (default 2048) |
+
+Do not enable debug logging in production for sensitive payloads.

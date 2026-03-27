@@ -73,3 +73,13 @@ PINECONE_DEBUG=true
 PINECONE_LOG_REQUESTS=true
 ```
 
+**Handle errors by category** after catching `Vectora\Pinecone\Core\Exception\ApiException`:
+
+```php
+if ($e->isAuthenticationError()) {
+    // rotate API key / alert
+} elseif ($e->category() === \Vectora\Pinecone\Core\Exception\ApiErrorCategory::RateLimited) {
+    // backoff
+}
+```
+

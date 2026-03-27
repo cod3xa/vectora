@@ -97,19 +97,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Embeddings (text → vector)
+    | Developer debug (verbose HTTP logging — avoid in production)
     |--------------------------------------------------------------------------
     |
-    | Drivers: `deterministic` (hash-based, no API), `openai` (OpenAI embeddings).
-    | When `cache.enabled` is true, results are keyed by SHA-256 of input text.
+    | When enabled, logs request/response previews (truncated) at debug level.
+    | Use with PINECONE_LOG_REQUESTS for full request/response line logging.
     |
     */
-    'embeddings' => [
-        'default' => env('PINECONE_EMBEDDING_DRIVER', 'deterministic'),
-        'cache' => [
-            'enabled' => filter_var(env('PINECONE_EMBEDDING_CACHE', false), FILTER_VALIDATE_BOOL),
-            'store' => env('PINECONE_EMBEDDING_CACHE_STORE'),
-            'prefix' => env('PINECONE_EMBEDDING_CACHE_PREFIX', 'vectora.embeddings'),
+    'debug' => [
+        'enabled' => filter_var(env('PINECONE_DEBUG', false), FILTER_VALIDATE_BOOL),
+        'channel' => env('PINECONE_DEBUG_CHANNEL'),
+        'body_preview_max' => (int) env('PINECONE_DEBUG_BODY_MAX', 2048),
+    ],
+
+    /*
+DDING_CACHE_PREFIX', 'vectora.embeddings'),
             'ttl' => env('PINECONE_EMBEDDING_CACHE_TTL'),
         ],
         'drivers' => [

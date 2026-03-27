@@ -56,3 +56,6 @@ php artisan queue:work
 | **[doc/core.md](doc/core.md)** | Framework-agnostic HTTP client usage |
 | **[doc/dx.md](doc/dx.md)** | Query cache, debug HTTP logging, config validation, `ApiException` categories |
 | **[doc/roadmap.md](doc/roadmap.md)** | Phases and future work |
+
+### Examples (Phase 5 — DX)
+

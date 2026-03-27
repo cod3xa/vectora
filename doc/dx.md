@@ -30,3 +30,15 @@ When **`PINECONE_DEBUG=true`**, the HTTP client logs **truncated** request and r
 | `PINECONE_DEBUG_BODY_MAX` | Max characters per preview (default 2048) |
 
 Do not enable debug logging in production for sensitive payloads.
+
+---
+
+## Config validation
+
+On **`PineconeServiceProvider::boot()`**, **`PineconeConfigValidator`** checks:
+
+- HTTP timeouts and retry counts are positive / sensible
+- `pinecone.eloquent.default_sync` is `sync` or `queued`
+- When query cache is enabled, `ttl` is not negative
+
+Invalid configuration throws **`InvalidArgumentException`** early so misconfiguration fails fast.

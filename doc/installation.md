@@ -87,3 +87,63 @@ Common optional keys (see published `config/pinecone.php` for the full list):
 | `PINECONE_QUERY_CACHE` | Cache `query()` results via Laravel cache (see **[dx.md](./dx.md)**) |
 | `PINECONE_DEBUG` | Verbose truncated HTTP body logging (development only) |
 
+**Embeddings:** see **[embeddings.md](./embeddings.md)** for drivers and cache-related env vars.
+
+**DX / hardening:** see **[dx.md](./dx.md)** for query cache keys, debug options, config validation, and `ApiException` classification.
+
+---
+
+## 5. Verify connectivity
+
+With config and env in place:
+
+```bash
+php artisan pinecone:sync
+```
+
+This exercises the control/data plane wiring (see **[laravel.md](./laravel.md)**). Ensure your index host and API key match the environment you expect.
+
+---
+
+## 6. Queues
+
+If you dispatch `UpsertVectorsJob`, `DeleteVectorsJob`, `SyncModelEmbeddingJob`, or use Eloquent **`queued`** sync mode, run a worker:
+
+```bash
+php artisan queue:work
+```
+
+Optional: `PINECONE_QUEUE_CONNECTION` and `PINECONE_QUEUE` in `.env` (see **[laravel.md](./laravel.md)**).
+
+---
+
+## 7. Next steps
+
+| Goal | Read |
+|------|------|
+| Facade, jobs, commands, multi-index | [laravel.md](./laravel.md) |
+| Text → vectors (OpenAI, cache) | [embeddings.md](./embeddings.md) |
+| Model sync + semantic search | [eloquent.md](./eloquent.md) |
+| Low-level HTTP / contracts | [core.md](./core.md) |
+
+---
+
+## 8. Troubleshooting
+
+| Symptom | Check |
+|---------|--------|
+| `Pinecone api_key is not configured` | `PINECONE_API_KEY` in `.env`, config cached with `php artisan config:clear` |
+| `host is not configured for index` | `PINECONE_HOST` or `indexes.*.host` for the connection name you use |
+| Vectors never appear | Queue worker running for queued mode; correct namespace; upsert not failing silently (check logs / `VectorFailed` event) |
+| OpenAI errors | `OPENAI_API_KEY`, model name, and `PINECONE_EMBEDDING_DRIVER=openai` |
+
+---
+
+## 9. Running this package’s test suite (contributors)
+
+Contributors cloning the library need **Composer** and, for Eloquent feature tests, the **pdo_sqlite** PHP extension (see CI workflow). From the package root:
+
+```bash
+composer install
+composer test
+```

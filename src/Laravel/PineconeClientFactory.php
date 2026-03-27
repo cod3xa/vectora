@@ -6,8 +6,10 @@ namespace Vectora\Pinecone\Laravel;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
+use Illuminate\Contracts\Cache\Repository as CacheRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Log;
+use Psr\Http\Message\MessageInterface;
 use Vectora\Pinecone\Contracts\IndexAdminContract;
 use Vectora\Pinecone\Contracts\VectorStoreContract;
 use Vectora\Pinecone\Core\Http\PineconeHttpTransport;
@@ -64,7 +66,7 @@ class PineconeClientFactory
             respectRetryAfter: (bool) ($http['respect_retry_after'] ?? true),
         );
 
-        $hooks = $this->makeHooks($c);
+        $hooks = $this->composeHooks($c);
 
         $factory = new HttpFactory;
         $this->transport = new PineconeHttpTransport(
@@ -83,7 +85,24 @@ class PineconeClientFactory
     /**
      * @param  array<string, mixed>  $c
      */
-    private function makeHooks(array $c): ?ObservabilityHooks
+    private function composeHooks(array $c): ?ObservabilityHooks
+    {
+        $parts = array_values(array_filter([
+            $this->makeLoggingHooks($c),
+            $this->makeDebugHooks($c),
+        ]));
+
+        if ($parts === []) {
+            return null;
+        }
+
+        return ObservabilityHooks::stack(...$parts);
+    }
+
+    /**
+     * @param  array<string, mixed>  $c
+     */
+    private function makeLoggingHooks(array $c): ?ObservabilityHooks
     {
         $log = $c['logging'] ?? [];
         if (! (bool) ($log['enabled'] ?? false)) {
@@ -129,6 +148,68 @@ class PineconeClientFactory
         );
     }
 
+    /**
+     * @param  array<string, mixed>  $c
+     */
+    private function makeDebugHooks(array $c): ?ObservabilityHooks
+    {
+        $dbg = $c['debug'] ?? [];
+        if (! is_array($dbg) || ! (bool) ($dbg['enabled'] ?? false)) {
+            return null;
+        }
+
+        $channel = isset($dbg['channel']) && is_string($dbg['channel']) && $dbg['channel'] !== ''
+            ? $dbg['channel']
+            : null;
+        $max = max(64, (int) ($dbg['body_preview_max'] ?? 2048));
+
+        $log = static function (string $message, array $context) use ($channel): void {
+            if ($channel !== null) {
+                Log::channel($channel)->debug($message, $context);
+            } else {
+                Log::debug($message, $context);
+            }
+        };
+
+        return new ObservabilityHooks(
+            beforeRequest: function ($request) use ($log, $max): void {
+                $preview = self::previewMessageBody($request, $max);
+                $log('pinecone.debug.request', [
+                    'uri' => (string) $request->getUri(),
+                    'method' => $request->getMethod(),
+                    'body_preview' => $preview,
+                ]);
+            },
+            afterResponse: function ($request, $response) use ($log, $max): void {
+                $preview = self::previewMessageBody($response, $max);
+                $log('pinecone.debug.response', [
+                    'uri' => (string) $request->getUri(),
+                    'status' => $response->getStatusCode(),
+                    'body_preview' => $preview,
+                ]);
+            },
+            onError: null,
+        );
+    }
+
+    /** Read up to $max bytes for logging and rewind the stream so callers can still read the body. */
+    private static function previewMessageBody(MessageInterface $message, int $max): string
+    {
+        $stream = $message->getBody();
+        if ($stream->isSeekable()) {
+            $stream->rewind();
+        }
+        $raw = $stream->getContents();
+        if ($stream->isSeekable()) {
+            $stream->rewind();
+        }
+        if (strlen($raw) > $max) {
+            return substr($raw, 0, $max).'…';
+        }
+
+        return $raw;
+    }
+
     public function vectorStore(?string $index = null): VectorStoreContract
     {
         $c = $this->pineconeConfig();
@@ -140,7 +221,29 @@ class PineconeClientFactory
         $ns = $conn['namespace'] ?? '';
         $defaultNamespace = is_string($ns) && $ns !== '' ? $ns : null;
 
-        return new PineconeVectorStore($this->transport(), $conn['host'], $defaultNamespace);
+        $indexName = $index ?? (string) ($c['default'] ?? 'default');
+        $inner = new PineconeVectorStore($this->transport(), $conn['host'], $defaultNamespace);
+
+        $qc = $c['query_cache'] ?? [];
+        if (! is_array($qc) || ! (bool) ($qc['enabled'] ?? false)) {
+            return $inner;
+        }
+
+        $storeName = $qc['store'] ?? null;
+        $manager = $this->app->make('cache');
+        $cache = $storeName !== null && is_string($storeName) && $storeName !== ''
+            ? $manager->store($storeName)
+            : $manager->store();
+        if (! $cache instanceof CacheRepository) {
+            throw new \RuntimeException('Pinecone query_cache requires a Laravel cache repository.');
+        }
+
+        $prefix = (string) ($qc['prefix'] ?? 'vectora.pinecone.query');
+        $ttlRaw = $qc['ttl'] ?? null;
+        $ttlSeconds = $ttlRaw === null || $ttlRaw === '' ? null : (int) $ttlRaw;
+        $fingerprint = $indexName.'|'.$conn['host'].'|'.($conn['namespace'] ?? '');
+
+        return new CachingVectorStore($inner, $cache, $prefix, $ttlSeconds, $fingerprint);
     }
 
     public function indexAdmin(): IndexAdminContract

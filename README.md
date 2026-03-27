@@ -54,7 +54,34 @@ php artisan queue:work
 | **[doc/embeddings.md](doc/embeddings.md)** | Embedding drivers, OpenAI, caching |
 | **[doc/eloquent.md](doc/eloquent.md)** | `HasEmbeddings`, semantic search, batch reindex |
 | **[doc/core.md](doc/core.md)** | Framework-agnostic HTTP client usage |
+| **[doc/dx.md](doc/dx.md)** | Query cache, debug HTTP logging, config validation, `ApiException` categories |
 | **[doc/roadmap.md](doc/roadmap.md)** | Phases and future work |
+
+### Examples (Phase 5 — DX)
+
+**Cache vector queries** (same query body hits Laravel cache until TTL or flush):
+
+```env
+PINECONE_QUERY_CACHE=true
+PINECONE_QUERY_CACHE_TTL=300
+```
+
+**Debug HTTP payloads** (truncated; use only in non-production):
+
+```env
+PINECONE_DEBUG=true
+PINECONE_LOG_REQUESTS=true
+```
+
+**Handle errors by category** after catching `Vectora\Pinecone\Core\Exception\ApiException`:
+
+```php
+if ($e->isAuthenticationError()) {
+    // rotate API key / alert
+} elseif ($e->category() === \Vectora\Pinecone\Core\Exception\ApiErrorCategory::RateLimited) {
+    // backoff
+}
+```
 
 ## Development (this repository)
 

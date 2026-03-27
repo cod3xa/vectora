@@ -48,4 +48,36 @@ final class ObservabilityHooks
             ($this->onError)($request, $e);
         }
     }
+
+    /**
+     * Run multiple hook sets in order (e.g. request logging + debug payload logging).
+     */
+    public static function stack(self ...$hooks): ?self
+    {
+        $list = array_values($hooks);
+        if ($list === []) {
+            return null;
+        }
+        if (count($list) === 1) {
+            return $list[0];
+        }
+
+        return new self(
+            beforeRequest: static function (RequestInterface $r) use ($list): void {
+                foreach ($list as $h) {
+                    $h->beforeRequest($r);
+                }
+            },
+            afterResponse: static function (RequestInterface $r, ResponseInterface $res) use ($list): void {
+                foreach ($list as $h) {
+                    $h->afterResponse($r, $res);
+                }
+            },
+            onError: static function (RequestInterface $r, Throwable $e) use ($list): void {
+                foreach ($list as $h) {
+                    $h->onError($r, $e);
+                }
+            },
+        );
+    }
 }

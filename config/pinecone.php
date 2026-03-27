@@ -97,6 +97,37 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Developer debug (verbose HTTP logging — avoid in production)
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, logs request/response previews (truncated) at debug level.
+    | Use with PINECONE_LOG_REQUESTS for full request/response line logging.
+    |
+    */
+    'debug' => [
+        'enabled' => filter_var(env('PINECONE_DEBUG', false), FILTER_VALIDATE_BOOL),
+        'channel' => env('PINECONE_DEBUG_CHANNEL'),
+        'body_preview_max' => (int) env('PINECONE_DEBUG_BODY_MAX', 2048),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Query result cache (Laravel Cache for VectorStoreContract::query)
+    |--------------------------------------------------------------------------
+    |
+    | Caches query responses by hashed request body + index fingerprint.
+    | Invalidate by TTL or `php artisan cache:clear` / store flush.
+    |
+    */
+    'query_cache' => [
+        'enabled' => filter_var(env('PINECONE_QUERY_CACHE', false), FILTER_VALIDATE_BOOL),
+        'store' => env('PINECONE_QUERY_CACHE_STORE'),
+        'prefix' => env('PINECONE_QUERY_CACHE_PREFIX', 'vectora.pinecone.query'),
+        'ttl' => env('PINECONE_QUERY_CACHE_TTL'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Embeddings (text → vector)
     |--------------------------------------------------------------------------
     |

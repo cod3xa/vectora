@@ -28,3 +28,9 @@ final class PineconeQueryCacheBindingTest extends PineconeFeatureTestCase
         $store = $this->app->make(VectorStoreContract::class);
         $this->assertInstanceOf(CachingVectorStore::class, $store);
     }
+
+    public function test_query_cache_config_exposes_ttl(): void
+    {
+        $this->assertSame(120, (int) config('pinecone.query_cache.ttl'));
+    }
+}

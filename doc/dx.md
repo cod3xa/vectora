@@ -53,3 +53,11 @@ Invalid configuration throws **`InvalidArgumentException`** early so misconfigur
 - **`isAuthenticationError()`**, **`isNotFound()`**, **`isClientError()`**, **`isServerError()`**, plus existing **`isRateLimited()`**
 
 Use these in listeners or `VectorFailed` handlers to branch on failure type without parsing raw status codes everywhere.
+
+---
+
+## Related docs
+
+- **[installation.md](./installation.md)** — environment variables
+- **[laravel.md](./laravel.md)** — service provider, facade, jobs
+- **[roadmap.md](./roadmap.md)** — phase status

@@ -42,3 +42,11 @@ Pass a custom **`PineconeMetrics`** implementation as the last constructor argum
 - **`PineconeMetrics`** — one summary record per operation with duration and correlation id.
 
 You can enable both independently.
+
+---
+
+## Related
+
+- **[core.md](./core.md)** — building `PineconeHttpTransport`
+- **[dx.md](./dx.md)** — debug logging and query cache
+- **[laravel.md](./laravel.md)** — service provider and facade

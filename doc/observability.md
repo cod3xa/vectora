@@ -22,3 +22,14 @@ Set **`PINECONE_METRICS=true`** (or `pinecone.metrics.enabled` in config). Each 
 Either `httpStatus` **or** `failureClass` is set, not both.
 
 Register a listener in your app (e.g. `Event::listen`) to push histograms, structured logs, or OpenTelemetry spans.
+
+---
+
+## Framework-agnostic core
+
+**`Vectora\Pinecone\Contracts\PineconeMetrics`** is the interface implemented by:
+
+- **`NullPineconeMetrics`** — default when metrics are off
+- **`EventDispatchingPineconeMetrics`** — Laravel implementation that dispatches the event above
+
+Pass a custom **`PineconeMetrics`** implementation as the last constructor argument to **`PineconeHttpTransport`** if you use the core client outside Laravel.

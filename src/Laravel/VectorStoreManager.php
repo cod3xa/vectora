@@ -50,16 +50,21 @@ final class VectorStoreManager
         if (! is_array($vs)) {
             $vs = [];
         }
-        $default = (string) ($vs['default'] ?? 'pinecone');
-        $driver = $name ?? $default;
-        $key = $driver.'|'.($pineconeIndex ?? '∅');
+        $default = strtolower(trim((string) ($vs['default'] ?? 'pinecone')));
+        $driver = $name !== null ? strtolower(trim($name)) : $default;
+        if ($driver === '') {
+            $driver = 'pinecone';
+        }
+        // Only Pinecone uses $pineconeIndex; other drivers share one resolved instance per driver.
+        $key = $driver === 'pinecone'
+            ? $driver.'|'.($pineconeIndex ?? '∅')
+            : $driver;
 
         if (! isset($this->resolved[$key])) {
             $this->resolved[$key] = $this->wrapQueryCache(
                 $this->createDriver($driver, $pineconeIndex, $config),
                 $config,
-                $driver,
-                $pineconeIndex
+                $driver
             );
         }
 
@@ -85,7 +90,7 @@ final class VectorStoreManager
     /**
      * @param  array<string, mixed>  $config
      */
-    private function wrapQueryCache(VectorStoreContract $inner, array $config, string $driver, ?string $pineconeIndex): VectorStoreContract
+    private function wrapQueryCache(VectorStoreContract $inner, array $config, string $driver): VectorStoreContract
     {
         if ($driver === 'pinecone') {
             return $inner;
@@ -108,7 +113,7 @@ final class VectorStoreManager
         $prefix = (string) ($qc['prefix'] ?? 'vectora.pinecone.query');
         $ttlRaw = $qc['ttl'] ?? null;
         $ttlSeconds = $ttlRaw === null || $ttlRaw === '' ? null : (int) $ttlRaw;
-        $fingerprint = $driver.'|'.($pineconeIndex ?? '').'|'.spl_object_id($inner);
+        $fingerprint = $driver.'|'.spl_object_id($inner);
 
         return new CachingVectorStore($inner, $cache, $prefix, $ttlSeconds, $fingerprint);
     }

@@ -14,7 +14,7 @@ final class VectorStoreMemoryDriverTest extends PineconeFeatureTestCase
     {
         $this->mergePineconeConfig([
             'api_key' => 'test-key',
-            'vector_store' => ['default' => 'memory'],
+            'vector_store' => ['default' => 'MEMORY'],
         ], $app);
     }
 
@@ -28,5 +28,14 @@ final class VectorStoreMemoryDriverTest extends PineconeFeatureTestCase
     {
         $m = $this->app->make(VectorStoreManager::class);
         $this->assertInstanceOf(LocalMemoryVectorStore::class, $m->driver('memory'));
+    }
+
+    public function test_memory_driver_resolution_ignores_pinecone_index(): void
+    {
+        $m = $this->app->make(VectorStoreManager::class);
+        $this->assertSame(
+            $m->driver('memory', 'logical-index-a'),
+            $m->driver('memory', 'logical-index-b'),
+        );
     }
 }

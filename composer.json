@@ -46,7 +46,8 @@
                 "Vectora\\Pinecone\\Laravel\\PineconeServiceProvider"
             ],
             "aliases": {
-                "Pinecone": "Vectora\\Pinecone\\Laravel\\Facades\\Pinecone"
+                "Pinecone": "Vectora\\Pinecone\\Laravel\\Facades\\Pinecone",
+                "Vector": "Vectora\\Pinecone\\Laravel\\Facades\\Vector"
             }
         }
     },

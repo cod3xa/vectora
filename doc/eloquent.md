@@ -27,6 +27,7 @@ Alternatively, `implements Embeddable` and `use HasEmbeddings` on any `Model` su
 - Override **`vectorEmbeddingMetadata()`** to add Pinecone metadata (merged with defaults `vectora_model`, `vectora_key`).
 - Override **`vectorEmbeddingIndex()`** / **`vectorEmbeddingNamespace()`** for multi-index setups (static methods; `null` = config default).
 - Override **`vectorEmbeddingStoreDriver()`** to target a non-default **`pinecone.vector_store`** driver (`memory`, `sqlite`, etc.); `null` uses the global default (see **[multi-backend.md](./multi-backend.md)**).
+- **`Article::rag()`** — fluent RAG entry (retrieve + LLM); same options as **`Vector::using(Article::class)`** (see **[rag.md](./rag.md)**).
 
 ---
 

@@ -128,16 +128,18 @@ Status: **complete** (see **[multi-backend.md](./multi-backend.md)**).
 
 ## Phase 8 — RAG Pipeline
 
-| Module | Sub-module / Task                     | Status     |
-| ------ | ------------------------------------- | ---------- |
-| RAG    | `RagPipeline` core class              | 🔴 Pending |
-| RAG    | Retrieval abstraction (topK, filters) | 🔴 Pending |
-| RAG    | `LLMDriver` interface                 | 🔴 Pending |
-| RAG    | OpenAI LLM driver                     | 🔴 Pending |
-| RAG    | Prompt builder (context injection)    | 🔴 Pending |
-| RAG    | `Vector::ask()` fluent API            | 🔴 Pending |
-| RAG    | Streaming responses support           | 🔴 Pending |
-| RAG    | Conversation memory (optional)        | 🔴 Pending |
+Status: **complete** (see **[rag.md](./rag.md)**).
+
+| Module | Sub-module / Task                     | Status  |
+| ------ | ------------------------------------- | ------- |
+| RAG    | `RagPipeline` core class              | 🟢 Done |
+| RAG    | Retrieval abstraction (topK, filters) | 🟢 Done |
+| RAG    | `LLMDriver` interface                 | 🟢 Done |
+| RAG    | OpenAI LLM driver                     | 🟢 Done |
+| RAG    | Prompt builder (context injection)    | 🟢 Done |
+| RAG    | `Vector::ask()` fluent API            | 🟢 Done |
+| RAG    | Streaming responses support           | 🟢 Done |
+| RAG    | Conversation memory (optional)        | 🟢 Done |
 
 ---
 
@@ -202,7 +204,7 @@ Status: **complete** (see **[multi-backend.md](./multi-backend.md)**).
 | Multi-backend | Qdrant / Weaviate / pgvector | 🟢 Done (Phase 7) |
 | Abstraction   | Scout-style engine           | 🔴 Pending |
 | Search        | Hybrid + reranking           | 🔴 Pending |
-| AI            | Full RAG pipeline            | 🔴 Pending |
+| AI            | Full RAG pipeline            | 🟢 Done (Phase 8 baseline) |
 | Ingestion     | File + chunking pipeline     | 🔴 Pending |
 | Observability | Cost + tracing + metrics     | 🔴 Pending |
 

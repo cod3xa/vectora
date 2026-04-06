@@ -89,4 +89,34 @@ final class PineconeConfigValidatorTest extends TestCase
             'vector_store' => ['default' => 'pinecone', 'drivers' => 'nope'],
         ]);
     }
+
+    public function test_rejects_non_array_llm_section(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('pinecone.llm must be an array');
+        PineconeConfigValidator::validate([
+            'http' => ['timeout' => 1, 'connect_timeout' => 1, 'retries' => 1],
+            'llm' => 'nope',
+        ]);
+    }
+
+    public function test_rejects_non_array_llm_drivers(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('pinecone.llm.drivers');
+        PineconeConfigValidator::validate([
+            'http' => ['timeout' => 1, 'connect_timeout' => 1, 'retries' => 1],
+            'llm' => ['default' => 'stub', 'drivers' => 'bad'],
+        ]);
+    }
+
+    public function test_rejects_unknown_llm_default(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('pinecone.llm.default');
+        PineconeConfigValidator::validate([
+            'http' => ['timeout' => 1, 'connect_timeout' => 1, 'retries' => 1],
+            'llm' => ['default' => 'unknown-llm', 'drivers' => []],
+        ]);
+    }
 }

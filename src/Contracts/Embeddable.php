@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Vectora\Pinecone\Contracts;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Vectora\Pinecone\DTO\QueryVectorsResult;
 use Vectora\Pinecone\Eloquent\Concerns\HasEmbeddings;
 use Vectora\Pinecone\Laravel\Jobs\SyncModelEmbeddingJob;
 
@@ -64,4 +67,15 @@ interface Embeddable
      * @return array<string, mixed>|null
      */
     public static function semanticSearchMetadataFilter(): ?array;
+
+    /**
+     * @param  array<string, mixed>|null  $additionalFilter
+     */
+    public static function semanticSearch(string $query, int $topK = 10, ?array $additionalFilter = null): QueryVectorsResult;
+
+    /**
+     * @param  array<string, mixed>|null  $additionalFilter
+     * @return Collection<int, Model&Embeddable>
+     */
+    public static function semanticSearchModels(string $query, int $topK = 10, ?array $additionalFilter = null): Collection;
 }

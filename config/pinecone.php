@@ -209,6 +209,31 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | LLM / RAG (Phase 8)
+    |--------------------------------------------------------------------------
+    |
+    | Drivers: `stub` (offline tests), `openai` (Chat Completions API).
+    | Use `Vector::using(YourModel::class)->ask('...')` or `YourModel::rag()->ask('...')`.
+    |
+    */
+    'llm' => [
+        'default' => env('VECTORA_LLM_DRIVER', 'stub'),
+        'drivers' => [
+            'stub' => [
+                'prefix' => env('VECTORA_LLM_STUB_PREFIX', 'STUB: '),
+            ],
+            'openai' => [
+                'api_key' => env('OPENAI_API_KEY', env('PINECONE_OPENAI_API_KEY', '')),
+                'model' => env('OPENAI_CHAT_MODEL', 'gpt-4o-mini'),
+                'base_url' => env('OPENAI_BASE_URL', 'https://api.openai.com/v1'),
+                'temperature' => (float) env('OPENAI_CHAT_TEMPERATURE', 0.2),
+                'max_tokens' => env('OPENAI_CHAT_MAX_TOKENS'),
+            ],
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Eloquent (HasEmbeddings)
     |--------------------------------------------------------------------------
     |

@@ -50,3 +50,4 @@ You can enable both independently.
 - **[core.md](./core.md)** — building `PineconeHttpTransport`
 - **[dx.md](./dx.md)** — debug logging and query cache
 - **[laravel.md](./laravel.md)** — service provider and facade
+- **[ingestion.md](./ingestion.md)** — Phase 9 jobs dispatch **`VectorSynced`** / **`VectorFailed`** for `ingest_upsert` (same as other vector jobs)

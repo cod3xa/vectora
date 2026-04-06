@@ -88,8 +88,12 @@ Common optional keys (see published `config/pinecone.php` for the full list):
 | `PINECONE_DEBUG` | Verbose truncated HTTP body logging (development only) |
 | `PINECONE_METRICS` | Dispatch `PineconeHttpRequestFinished` per HTTP call (see **[observability.md](./observability.md)**) |
 | `VECTORA_VECTOR_STORE_DRIVER` | Default vector backend: `pinecone`, `memory`, `sqlite`, `qdrant`, `weaviate`, `pgvector` (see **[multi-backend.md](./multi-backend.md)**) |
+| `VECTORA_LLM_DRIVER` | RAG chat driver: `stub` (default) or `openai` (see **[rag.md](./rag.md)**) |
+| `OPENAI_CHAT_MODEL` | Chat Completions model when using the OpenAI LLM driver (default `gpt-4o-mini`) |
 
 **Embeddings:** see **[embeddings.md](./embeddings.md)** for drivers and cache-related env vars.
+
+**RAG / LLM:** see **[rag.md](./rag.md)** for `Vector` facade, streaming, and optional conversation memory.
 
 **Alternate vector stores:** see **[multi-backend.md](./multi-backend.md)** for Qdrant, Weaviate, SQLite, and pgvector env keys.
 

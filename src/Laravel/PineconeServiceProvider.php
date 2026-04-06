@@ -7,13 +7,17 @@ namespace Vectora\Pinecone\Laravel;
 use Illuminate\Support\ServiceProvider;
 use Vectora\Pinecone\Contracts\EmbeddingDriver;
 use Vectora\Pinecone\Contracts\IndexAdminContract;
+use Vectora\Pinecone\Contracts\LLMDriver;
 use Vectora\Pinecone\Contracts\VectorStoreContract;
 use Vectora\Pinecone\Core\VectorStore\LocalMemoryVectorStore;
 use Vectora\Pinecone\Laravel\Commands\PineconeFlushCommand;
 use Vectora\Pinecone\Laravel\Commands\PineconeSyncCommand;
 use Vectora\Pinecone\Laravel\Embeddings\EmbeddingDriverFactory;
 use Vectora\Pinecone\Laravel\Embeddings\EmbeddingManager;
+use Vectora\Pinecone\Laravel\Embeddings\LLMDriverFactory;
+use Vectora\Pinecone\Laravel\Embeddings\LLMManager;
 use Vectora\Pinecone\Laravel\Observability\EventDispatchingPineconeMetrics;
+use Vectora\Pinecone\Laravel\Rag\RagQueryFactory;
 use Vectora\Pinecone\Laravel\Support\PineconeConfigValidator;
 
 class PineconeServiceProvider extends ServiceProvider
@@ -52,6 +56,22 @@ class PineconeServiceProvider extends ServiceProvider
 
         $this->app->bind(EmbeddingDriver::class, function ($app) {
             return $app->make(EmbeddingManager::class)->driver();
+        });
+
+        $this->app->singleton(LLMDriverFactory::class, function ($app) {
+            return new LLMDriverFactory($app);
+        });
+
+        $this->app->singleton(LLMManager::class, function ($app) {
+            return new LLMManager($app->make(LLMDriverFactory::class));
+        });
+
+        $this->app->bind(LLMDriver::class, function ($app) {
+            return $app->make(LLMManager::class)->driver();
+        });
+
+        $this->app->singleton(RagQueryFactory::class, function ($app) {
+            return new RagQueryFactory($app->make(LLMManager::class));
         });
 
         $this->app->bind(IndexAdminContract::class, function ($app) {

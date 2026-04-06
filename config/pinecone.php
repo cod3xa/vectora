@@ -209,6 +209,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Data ingestion (Phase 9)
+    |--------------------------------------------------------------------------
+    |
+    | Chunk defaults for `Vector::ingest()` when not calling ->chunks() / ->chunkUsing().
+    | PDF extraction uses smalot/pdf-parser (required dependency).
+    |
+    */
+    'ingestion' => [
+        'default_chunk_size' => (int) env('VECTORA_INGEST_CHUNK_SIZE', 512),
+        'default_chunk_overlap' => (int) env('VECTORA_INGEST_CHUNK_OVERLAP', 64),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | LLM / RAG (Phase 8)
     |--------------------------------------------------------------------------
     |

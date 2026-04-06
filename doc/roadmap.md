@@ -202,7 +202,7 @@ Status: **complete** (see **[multi-backend.md](./multi-backend.md)**).
 | Multi-backend | Qdrant / Weaviate / pgvector | 🟢 Done (Phase 7) |
 | Abstraction   | Scout-style engine           | 🔴 Pending |
 | Search        | Hybrid + reranking           | 🔴 Pending |
-| AI            | Full RAG pipeline            | 🔴 Pending |
+| AI            | Full RAG pipeline            | 🟢 Done (Phase 8 baseline) |
 | Ingestion     | File + chunking pipeline     | 🔴 Pending |
 | Observability | Cost + tracing + metrics     | 🔴 Pending |
 

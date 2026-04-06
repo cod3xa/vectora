@@ -58,6 +58,7 @@ php artisan queue:work
 | **[doc/observability.md](doc/observability.md)** | Phase 6: HTTP metrics, `PineconeHttpRequestFinished`, correlation ids |
 | **[doc/multi-backend.md](doc/multi-backend.md)** | Phase 7: Qdrant, Weaviate, SQLite, pgvector, `VectorStoreManager` |
 | **[doc/rag.md](doc/rag.md)** | Phase 8: RAG pipeline, `Vector` facade, LLM drivers, streaming |
+| **[doc/ingestion.md](doc/ingestion.md)** | Phase 9: chunking, file/HTML/URL ingestion, `Vector::ingest()`, jobs |
 | **[doc/roadmap.md](doc/roadmap.md)** | Phases and future work |
 
 ### Examples (Phase 5 — DX)

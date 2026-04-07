@@ -55,7 +55,7 @@ php artisan queue:work
 | **[doc/eloquent.md](doc/eloquent.md)** | `HasEmbeddings`, semantic search, batch reindex |
 | **[doc/core.md](doc/core.md)** | Framework-agnostic HTTP client usage |
 | **[doc/dx.md](doc/dx.md)** | Phase 5 & 11: query cache, debug HTTP, `semanticWhere`/`semanticOrderBy`, attributes, `make:vector-model`, `pinecone:semantic-debug` |
-| **[doc/observability.md](doc/observability.md)** | Phase 6: HTTP metrics, `PineconeHttpRequestFinished`, correlation ids |
+| **[doc/observability.md](doc/observability.md)** | Phase 6 HTTP metrics; Phase 12 trace id, embedding/LLM events, cost estimates, `pinecone:observability` |
 | **[doc/multi-backend.md](doc/multi-backend.md)** | Phase 7: Qdrant, Weaviate, SQLite, pgvector, `VectorStoreManager` |
 | **[doc/rag.md](doc/rag.md)** | Phase 8: RAG pipeline, `Vector` facade, LLM drivers, streaming |
 | **[doc/ingestion.md](doc/ingestion.md)** | Phase 9: chunking, file/HTML/URL ingestion, `Vector::ingest()`, jobs |

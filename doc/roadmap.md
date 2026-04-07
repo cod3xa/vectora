@@ -161,14 +161,16 @@ Status: **complete** (see **[ingestion.md](./ingestion.md)**).
 
 ## Phase 10 — Advanced Search
 
-| Module | Sub-module / Task                | Status     |
-| ------ | -------------------------------- | ---------- |
-| Search | Hybrid search (vector + keyword) | 🔴 Pending |
-| Search | Reranking support                | 🔴 Pending |
-| Search | Advanced metadata filtering      | 🔴 Pending |
-| Search | Faceted search                   | 🔴 Pending |
-| Search | Pagination / cursor support      | 🔴 Pending |
-| Search | Score normalization              | 🔴 Pending |
+Status: **complete** (see **[search.md](./search.md)**).
+
+| Module | Sub-module / Task                | Status  |
+| ------ | -------------------------------- | ------- |
+| Search | Hybrid search (vector + keyword) | 🟢 Done |
+| Search | Reranking support                | 🟢 Done |
+| Search | Advanced metadata filtering      | 🟢 Done |
+| Search | Faceted search                   | 🟢 Done |
+| Search | Pagination / cursor support      | 🟢 Done |
+| Search | Score normalization              | 🟢 Done |
 
 ---
 

@@ -63,3 +63,13 @@ public static function vectorEmbeddingSyncMode(): string
 Empty embedding text runs a **delete** instead of upserting.
 
 ---
+
+## Semantic search
+
+```php
+$result = Article::semanticSearch('why is the sky blue', topK: 10);
+$models = Article::semanticSearchModels('why is the sky blue');
+```
+
+Default metadata filter: `{ "vectora_model": Article::class }`. Return **`null`** from **`semanticSearchMetadataFilter()`** to search the whole namespace. Combine with an extra filter via the `$additionalFilter` argument (`$and` is built for you).
+

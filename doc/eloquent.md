@@ -73,3 +73,18 @@ $models = Article::semanticSearchModels('why is the sky blue');
 
 Default metadata filter: `{ "vectora_model": Article::class }`. Return **`null`** from **`semanticSearchMetadataFilter()`** to search the whole namespace. Combine with an extra filter via the `$additionalFilter` argument (`$and` is built for you).
 
+### Phase 11 — `semanticWhere()` / `semanticOrderBy()` (Eloquent builder)
+
+`Model::query()` on an embeddable model returns **`SemanticEloquentBuilder`**:
+
+```php
+$published = Article::query()
+    ->where('published', true)
+    ->semanticWhere('async PHP patterns', topK: 25)
+    ->get();
+```
+
+Invalid **`topK`** throws **`Vectora\Pinecone\Laravel\Exceptions\SemanticSearchInvalidArgumentException`**.
+
+### Virtual embedding text via cast (Phase 11)
+

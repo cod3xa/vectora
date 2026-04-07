@@ -145,15 +145,17 @@ Status: **complete** (see **[rag.md](./rag.md)**).
 
 ## Phase 9 — Data Ingestion
 
-| Module    | Sub-module / Task               | Status     |
-| --------- | ------------------------------- | ---------- |
-| Ingestion | Text chunking strategies        | 🔴 Pending |
-| Ingestion | File ingestion (PDF, DOCX, TXT) | 🔴 Pending |
-| Ingestion | HTML / web ingestion            | 🔴 Pending |
-| Ingestion | Metadata enrichment             | 🔴 Pending |
-| Ingestion | Batch ingestion pipeline        | 🔴 Pending |
-| Ingestion | Queue-based ingestion jobs      | 🔴 Pending |
-| Ingestion | `Vector::ingest()` API          | 🔴 Pending |
+Status: **complete** (see **[ingestion.md](./ingestion.md)**).
+
+| Module    | Sub-module / Task               | Status  |
+| --------- | ------------------------------- | ------- |
+| Ingestion | Text chunking strategies        | 🟢 Done |
+| Ingestion | File ingestion (PDF, DOCX, TXT) | 🟢 Done |
+| Ingestion | HTML / web ingestion            | 🟢 Done |
+| Ingestion | Metadata enrichment             | 🟢 Done |
+| Ingestion | Batch ingestion pipeline      | 🟢 Done |
+| Ingestion | Queue-based ingestion jobs      | 🟢 Done |
+| Ingestion | `Vector::ingest()` API          | 🟢 Done |
 
 ---
 
@@ -205,7 +207,7 @@ Status: **complete** (see **[rag.md](./rag.md)**).
 | Abstraction   | Scout-style engine           | 🔴 Pending |
 | Search        | Hybrid + reranking           | 🔴 Pending |
 | AI            | Full RAG pipeline            | 🟢 Done (Phase 8 baseline) |
-| Ingestion     | File + chunking pipeline     | 🔴 Pending |
+| Ingestion     | File + chunking pipeline     | 🟢 Done (Phase 9) |
 | Observability | Cost + tracing + metrics     | 🔴 Pending |
 
 ---

@@ -7,12 +7,15 @@ namespace Vectora\Pinecone\Laravel\Rag;
 use Illuminate\Database\Eloquent\Model;
 use Vectora\Pinecone\Contracts\Embeddable;
 use Vectora\Pinecone\Laravel\Embeddings\LLMManager;
+use Vectora\Pinecone\Laravel\Ingestion\IngestionBuilder;
+use Vectora\Pinecone\Laravel\Ingestion\IngestionFactory;
 
-/** Factory for {@see RagQueryBuilder} (used by the `Vector` facade and {@see HasEmbeddings::rag()}). */
+/** Factory for {@see RagQueryBuilder} and {@see IngestionBuilder} (`Vector` facade). */
 final class RagQueryFactory
 {
     public function __construct(
         private readonly LLMManager $llmManager,
+        private readonly IngestionFactory $ingestionFactory,
     ) {}
 
     /**
@@ -31,5 +34,10 @@ final class RagQueryFactory
         }
 
         return new RagQueryBuilder($modelClass, $this->llmManager);
+    }
+
+    public function ingest(): IngestionBuilder
+    {
+        return $this->ingestionFactory->builder();
     }
 }

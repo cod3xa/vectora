@@ -59,6 +59,7 @@ php artisan queue:work
 | **[doc/multi-backend.md](doc/multi-backend.md)** | Phase 7: Qdrant, Weaviate, SQLite, pgvector, `VectorStoreManager` |
 | **[doc/rag.md](doc/rag.md)** | Phase 8: RAG pipeline, `Vector` facade, LLM drivers, streaming |
 | **[doc/ingestion.md](doc/ingestion.md)** | Phase 9: chunking, file/HTML/URL ingestion, `Vector::ingest()`, jobs |
+| **[doc/search.md](doc/search.md)** | Phase 10: hybrid-style search, reranking, facets, pagination, score normalization |
 | **[doc/roadmap.md](doc/roadmap.md)** | Phases and future work |
 
 ### Examples (Phase 5 — DX)

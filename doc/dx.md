@@ -97,3 +97,14 @@ Calling **`semanticOrderBy`** after a matching **`semanticWhere`** uses **`reord
 
 Invalid **`topK`** on **`semanticSearch()`** / semantic builder methods throws **`SemanticSearchInvalidArgumentException`** with a short, actionable message instead of a bare **`InvalidArgumentException`**.
 
+---
+
+## Related docs
+
+- **[installation.md](./installation.md)** — environment variables
+- **[laravel.md](./laravel.md)** — service provider, facade, jobs
+- **[eloquent.md](./eloquent.md)** — Phase 4 & 11: `HasEmbeddings`, semantic builder, attributes, cast
+- **[ingestion.md](./ingestion.md)** — Phase 9 `Vector::ingest()` and chunk defaults
+- **[search.md](./search.md)** — Phase 10 `Pinecone::advancedSearch()` and `pinecone.search` validation
+- **[observability.md](./observability.md)** — Phase 6 HTTP metrics and `PineconeHttpRequestFinished`
+- **[roadmap.md](./roadmap.md)** — phase status

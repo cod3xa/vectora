@@ -91,5 +91,13 @@ final class PineconeConfigValidator
                 'pinecone.llm.default must be one of: '.implode(', ', $llmAllowed).'.'
             );
         }
+
+        $search = $config['search'] ?? [];
+        if ($search !== [] && ! is_array($search)) {
+            throw new \InvalidArgumentException('pinecone.search must be an array.');
+        }
+        if (isset($search['default_fetch_top_k']) && (int) $search['default_fetch_top_k'] < 1) {
+            throw new \InvalidArgumentException('pinecone.search.default_fetch_top_k must be at least 1.');
+        }
     }
 }

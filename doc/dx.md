@@ -61,3 +61,10 @@ Use these in listeners or `VectorFailed` handlers to branch on failure type with
 Phase 11 builds on **`HasEmbeddings`**: a **`SemanticEloquentBuilder`** (via `Model::query()` on embeddable models), **PHP 8 attributes** for embedding columns and optional index name, a **concatenation cast** for virtual embedding text, Artisan **`make:vector-model`** / **`pinecone:semantic-debug`**, **`pinecone.dx`** config, and **`SemanticSearchInvalidArgumentException`** for clearer invalid-argument failures.
 
 ### Semantic query builder
+
+On **`Embeddable`** models, `newQuery()` returns **`SemanticEloquentBuilder`**:
+
+- **`semanticWhere($queryText, $topK = 10, $additionalFilter = null)`** — runs the same vector query as **`Embeddable::semanticSearch()`**, restricts SQL rows with **`WHERE id IN (...)`**, and orders by similarity (MySQL **`FIELD()`**; other drivers use a **`CASE`** expression).
+- **`semanticOrderBy(...)`** — if the last **`semanticWhere`** used the same text, topK, and filter, **re-applies** similarity ordering only (no second vector API call). Otherwise it behaves like **`semanticWhere`**.
+
+Compose with normal Eloquent **`where`**: `Article::query()->where('published', true)->semanticWhere('Laravel queues', 20)`.

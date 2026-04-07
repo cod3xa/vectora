@@ -68,3 +68,7 @@ On **`Embeddable`** models, `newQuery()` returns **`SemanticEloquentBuilder`**:
 - **`semanticOrderBy(...)`** — if the last **`semanticWhere`** used the same text, topK, and filter, **re-applies** similarity ordering only (no second vector API call). Otherwise it behaves like **`semanticWhere`**.
 
 Compose with normal Eloquent **`where`**: `Article::query()->where('published', true)->semanticWhere('Laravel queues', 20)`.
+
+Calling **`semanticOrderBy`** after a matching **`semanticWhere`** uses **`reorder()`** before applying similarity order, which clears prior **`orderBy`** clauses — put **`semanticWhere`** first, then add secondary ordering if needed.
+
+### Attributes and defaults

@@ -55,3 +55,5 @@ Invalid configuration throws **`InvalidArgumentException`** early so misconfigur
 Use these in listeners or `VectorFailed` handlers to branch on failure type without parsing raw status codes everywhere.
 
 ---
+
+## Phase 11 — DX 2.0 (semantic Eloquent, attributes, casts, artisan)

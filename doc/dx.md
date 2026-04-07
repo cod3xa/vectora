@@ -86,3 +86,9 @@ Calling **`semanticOrderBy`** after a matching **`semanticWhere`** uses **`reord
 |--------|---------|
 | **`php artisan make:vector-model Post`** | Scaffold **`AbstractEmbeddableModel`** with **`vectorEmbeddingFields()`** stub. |
 | **`php artisan pinecone:semantic-debug "App\Models\Post" "your query"`** | Prints JSON match summary; requires **`pinecone.dx.semantic_debug`** / **`VECTORA_SEMANTIC_DEBUG=true`**. |
+
+### Config
+
+| Key | Purpose |
+|-----|---------|
+| **`pinecone.dx.semantic_debug`** | Enable **`pinecone:semantic-debug`** (default `false`; use env **`VECTORA_SEMANTIC_DEBUG`**). |

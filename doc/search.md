@@ -44,3 +44,21 @@ Defaults for fetch size and keyword boost come from **`config('pinecone.search')
 | **Pinecone hybrid API** | Optional **`QueryVectorsRequest`** fields: **`sparseVector`**, **`hybridAlpha`**, **`paginationToken`** — forwarded in JSON for indexes that support them. |
 | **Sorted hits** | **`PineconeVectorStore`** sorts matches by **score descending** when parsing responses (deterministic ordering). |
 
+---
+
+## 3. Metadata filters
+
+Use Pinecone’s JSON filter DSL, or helpers in **`MetadataFilterComposer`**:
+
+```php
+use Vectora\Pinecone\Search\MetadataFilterComposer;
+
+$filter = MetadataFilterComposer::allOf([
+    'tenant_id' => ['$eq' => 'acme'],
+    'year' => ['$gte' => 2020],
+]);
+```
+
+Compose with **`$and` / `$or`**, **`$in`**, **`$exists`** as in **[Pinecone filter reference](https://docs.pinecone.io/guides/data/filter-with-metadata)**.
+
+---

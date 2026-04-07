@@ -161,14 +161,16 @@ Status: **complete** (see **[ingestion.md](./ingestion.md)**).
 
 ## Phase 10 — Advanced Search
 
-| Module | Sub-module / Task                | Status     |
-| ------ | -------------------------------- | ---------- |
-| Search | Hybrid search (vector + keyword) | 🔴 Pending |
-| Search | Reranking support                | 🔴 Pending |
-| Search | Advanced metadata filtering      | 🔴 Pending |
-| Search | Faceted search                   | 🔴 Pending |
-| Search | Pagination / cursor support      | 🔴 Pending |
-| Search | Score normalization              | 🔴 Pending |
+Status: **complete** (see **[search.md](./search.md)**).
+
+| Module | Sub-module / Task                | Status  |
+| ------ | -------------------------------- | ------- |
+| Search | Hybrid search (vector + keyword) | 🟢 Done |
+| Search | Reranking support                | 🟢 Done |
+| Search | Advanced metadata filtering      | 🟢 Done |
+| Search | Faceted search                   | 🟢 Done |
+| Search | Pagination / cursor support      | 🟢 Done |
+| Search | Score normalization              | 🟢 Done |
 
 ---
 
@@ -205,7 +207,7 @@ Status: **complete** (see **[ingestion.md](./ingestion.md)**).
 | ------------- | ---------------------------- | ---------- |
 | Multi-backend | Qdrant / Weaviate / pgvector | 🟢 Done (Phase 7) |
 | Abstraction   | Scout-style engine           | 🔴 Pending |
-| Search        | Hybrid + reranking           | 🔴 Pending |
+| Search        | Hybrid + reranking           | 🟢 Done (Phase 10) |
 | AI            | Full RAG pipeline            | 🟢 Done (Phase 8 baseline) |
 | Ingestion     | File + chunking pipeline     | 🟢 Done (Phase 9) |
 | Observability | Cost + tracing + metrics     | 🔴 Pending |

@@ -140,6 +140,7 @@ Register a custom **`TextExtractor`** on **`ExtractorRegistry::register()`** for
 
 ## 9. See also
 
+- **[search.md](./search.md)** — Phase 10: `Pinecone::advancedSearch()` for retrieval after ingest.
 - **[rag.md](./rag.md)** — Phase 8 RAG / `Vector::using(Model::class)`.
 - **[multi-backend.md](./multi-backend.md)** — switching vector stores.
 - **[embeddings.md](./embeddings.md)** — embedding drivers and dimensions (must match index).

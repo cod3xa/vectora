@@ -9,6 +9,7 @@ use Vectora\Pinecone\Contracts\EmbeddingDriver;
 use Vectora\Pinecone\Contracts\IndexAdminContract;
 use Vectora\Pinecone\Contracts\VectorStoreContract;
 use Vectora\Pinecone\Laravel\Embeddings\EmbeddingManager;
+use Vectora\Pinecone\Laravel\Search\AdvancedSearchBuilder;
 
 /**
  * Laravel entry point: resolves named index connections and admin client.
@@ -86,5 +87,17 @@ class PineconeManager
         }
 
         return $config[$key] ?? $default;
+    }
+
+    /**
+     * Phase 10 advanced search: hybrid keyword boost, reranking, facets, pagination, score normalization.
+     */
+    public function advancedSearch(?string $index = null, ?string $embeddingDriver = null): AdvancedSearchBuilder
+    {
+        $store = $this->app->make(VectorStoreManager::class)->driver(null, $index);
+        /** @var array<string, mixed> $search */
+        $search = (array) $this->app['config']->get('pinecone.search', []);
+
+        return new AdvancedSearchBuilder($store, $this->embeddings($embeddingDriver), $search);
     }
 }

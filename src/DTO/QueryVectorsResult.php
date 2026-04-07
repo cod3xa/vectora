@@ -18,5 +18,6 @@ final readonly class QueryVectorsResult
         public array $matches,
         public ?string $namespace = null,
         public ?array $usage = null,
+        public ?string $nextPaginationToken = null,
     ) {}
 }

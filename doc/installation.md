@@ -16,6 +16,8 @@ This guide covers installing **Vectora** (`vectora/laravel-pinecone`) in a Larav
 
 The package ships **`smalot/pdfparser`** for **PDF** ingestion. No extra Composer step is required.
 
+Optional **Phase 10** env vars: **`VECTORA_SEARCH_FETCH_TOP_K`**, **`VECTORA_SEARCH_KEYWORD_BOOST`** (see **[search.md](./search.md)**).
+
 ---
 
 ## 2. Install via Composer

@@ -114,8 +114,13 @@ final class PineconeVectorStore implements ProvidesVectorStoreCapabilities, Vect
         }
         $ns = isset($data['namespace']) && is_string($data['namespace']) ? $data['namespace'] : null;
         $usage = isset($data['usage']) && is_array($data['usage']) ? $data['usage'] : null;
+        usort($matches, static fn (QueryVectorMatch $a, QueryVectorMatch $b): int => $b->score <=> $a->score);
+        $nextToken = null;
+        if (isset($data['paginationToken']) && is_string($data['paginationToken'])) {
+            $nextToken = $data['paginationToken'];
+        }
 
-        return new QueryVectorsResult($matches, $ns, $usage);
+        return new QueryVectorsResult($matches, $ns, $usage, $nextToken);
     }
 
     private function parseStatsResponse(ResponseInterface $response): DescribeIndexStatsResult
@@ -170,13 +175,16 @@ final class PineconeVectorStore implements ProvidesVectorStoreCapabilities, Vect
         }
 
         return new QueryVectorsRequest(
-            $request->vector,
-            $request->topK,
-            $ns,
-            $request->filter,
-            $request->includeMetadata,
-            $request->includeValues,
-            $request->queryByVectorId,
+            vector: $request->vector,
+            topK: $request->topK,
+            namespace: $ns,
+            filter: $request->filter,
+            includeMetadata: $request->includeMetadata,
+            includeValues: $request->includeValues,
+            queryByVectorId: $request->queryByVectorId,
+            sparseVector: $request->sparseVector,
+            hybridAlpha: $request->hybridAlpha,
+            paginationToken: $request->paginationToken,
         );
     }
 

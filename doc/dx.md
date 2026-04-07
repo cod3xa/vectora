@@ -72,3 +72,7 @@ Compose with normal Eloquent **`where`**: `Article::query()->where('published', 
 Calling **`semanticOrderBy`** after a matching **`semanticWhere`** uses **`reorder()`** before applying similarity order, which clears prior **`orderBy`** clauses — put **`semanticWhere`** first, then add secondary ordering if needed.
 
 ### Attributes and defaults
+
+- **`#[EmbeddingColumns(columns: ['title', 'body'])]`** on the model class — **HasEmbeddings** resolves **`vectorEmbeddingFields()`** from this attribute when you do **not** override **`vectorEmbeddingFields()`** manually.
+- **`#[VectorEmbeddingIndexName('logical-index')]`** — optional; feeds **`vectorEmbeddingIndex()`** when not overridden.
+

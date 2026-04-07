@@ -43,6 +43,7 @@ The package is split so **vector storage is abstract** and **Laravel is optional
 | **Eloquent** | Scout-like DX: sync lifecycle, metadata, batch/queue indexing. |
 | **RAG (Phase 8)** | `RagPipeline`, `LLMDriver`, `Vector` facade / `Model::rag()` over `Embeddable` search. |
 | **Ingestion (Phase 9)** | Chunking, file/HTML/URL extractors, `IngestionPipeline`, `Vector::ingest()`, `IngestUpsertJob`. |
+| **Search (Phase 10)** | `Pinecone::advancedSearch()`, hybrid keyword boost, rerankers, facets, pagination, score normalization, optional sparse/hybrid query fields. |
 | **Jobs / Commands** | Async and operational surfaces (`pinecone:sync`, `pinecone:flush`). |
 
 ### Data flow (RAG / semantic search)

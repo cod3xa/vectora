@@ -62,3 +62,13 @@ $filter = MetadataFilterComposer::allOf([
 Compose with **`$and` / `$or`**, **`$in`**, **`$exists`** as in **[Pinecone filter reference](https://docs.pinecone.io/guides/data/filter-with-metadata)**.
 
 ---
+
+## 4. Configuration
+
+```php
+'search' => [
+    'default_fetch_top_k' => (int) env('VECTORA_SEARCH_FETCH_TOP_K', 50),
+    'keyword_boost_per_token' => (float) env('VECTORA_SEARCH_KEYWORD_BOOST', 0.05),
+],
+```
+

@@ -29,3 +29,18 @@ $result = Pinecone::advancedSearch()
 
 Defaults for fetch size and keyword boost come from **`config('pinecone.search')`** (see published `config/pinecone.php`).
 
+---
+
+## 2. Features vs backends
+
+| Capability | Behaviour |
+|------------|-----------|
+| **Vector retrieval** | Standard dense `query()` with embedding of `queryText()`. |
+| **Keyword “hybrid”** | **Client-side** rerank: boosts score when a metadata field (default `text`) contains query tokens (see **`KeywordBoostReranker`**). Not Pinecone sparse vectors unless you also pass **`sparseVector`** (below). |
+| **Reranking** | Implement **`RerankerContract`** and **`->rerankWith($r)`** for custom order. |
+| **Score normalization** | **`normalizeMinMax()`** or **`normalizeSoftmax()`** on the match list after rerank. |
+| **Facets** | **`FacetAggregator`** counts distinct metadata values **on the current result set** (approximate; not a full index facet engine). |
+| **Pagination** | **`paginate($page, $perPage)`** slices matches after fetch/rerank/normalize. Use a **large enough `fetchTopK()`** so pagination has data. |
+| **Pinecone hybrid API** | Optional **`QueryVectorsRequest`** fields: **`sparseVector`**, **`hybridAlpha`**, **`paginationToken`** — forwarded in JSON for indexes that support them. |
+| **Sorted hits** | **`PineconeVectorStore`** sorts matches by **score descending** when parsing responses (deterministic ordering). |
+

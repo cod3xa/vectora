@@ -72,3 +72,15 @@ Compose with **`$and` / `$or`**, **`$in`**, **`$exists`** as in **[Pinecone filt
 ],
 ```
 
+---
+
+## 5. Framework-only utilities
+
+| Class | Role |
+|-------|------|
+| **`ScoreNormalizer`** | `minMax()`, `softmax()` over **`QueryVectorMatch`** lists. |
+| **`KeywordBoostReranker`** | Implements **`RerankerContract`**. |
+| **`FacetAggregator`** | `aggregate($matches, $keys)` |
+| **`OffsetPagination`** | `slice($matches, $offset, $limit)` |
+
+---
